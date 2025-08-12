@@ -74,7 +74,7 @@
                   <div class="secondary" id="addrMeta">CEP 04040-007 - Santo Amaro, São Paulo, São Paulo - +551197290734</div>
                 </div>
               </div>
-              <a href="#" class="row-action">Alterar</a>
+               <button class="row-action" type="button">Alterar</button>
             </div>
 
             <div class="access-row">
@@ -93,7 +93,7 @@
                   <div class="secondary">Chega quarta-feira 20/08</div>
                 </div>
               </div>
-              <a href="#" class="row-action">Alterar</a>
+               <button class="row-action" type="button">Alterar</button>
             </div>
           </div>
 
@@ -170,7 +170,7 @@
           </div>
 
           <div class="inline-actions">
-            <a href="#" class="link">Alterar forma de pagamento</a>
+            <button class="link" type="button">Alterar forma de pagamento</button>
           </div>
 
           <div class="place-order">
@@ -253,11 +253,18 @@
     </div>
      <script src="mock.js"></script>
      <script>
-       // Remove page overlay shortly after mount (pure loading between pages only)
-       window.addEventListener('load', () => {
-         const overlay = document.getElementById('pageOverlay');
-         setTimeout(() => { if (overlay) overlay.classList.remove('show'); }, 800);
-       });
+       // Remove overlay after fonts are ready to avoid flicker
+       (function() {
+         function hideOverlay() {
+           const overlay = document.getElementById('pageOverlay');
+           if (overlay) overlay.classList.remove('show');
+         }
+         if (document.fonts && document.fonts.ready) {
+           document.fonts.ready.then(() => setTimeout(hideOverlay, 100));
+         } else {
+           window.addEventListener('load', () => setTimeout(hideOverlay, 300));
+         }
+       })();
      </script>
   </body>
   </html>

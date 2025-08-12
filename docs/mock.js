@@ -156,7 +156,6 @@
     }, ONE_TAP_DELAY_MS);
 
     continueBtn.addEventListener('click', (e) => {
-      e.preventDefault();
       // If the user clicks main CTA, simulate same flow
       const overlay = document.getElementById('pageOverlay');
       if (overlay) overlay.classList.add('show');
