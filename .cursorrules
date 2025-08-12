@@ -1,0 +1,67 @@
+# One-Tap Login Google - Cursor Rules
+
+## Objetivo do Projeto
+Este projeto implementa um fluxo de login de um toque com Google (One-Tap Login) que direciona para uma página de pagamento. 
+
+### Estrutura:
+- `index.html` - Página principal com botão de login Google
+- `loading.html` - Tela de carregamento durante autenticação  
+- `payment.html` - Página de checkout após login
+- `mock.js` - Simulação de backend/API
+- `styles.css` - Estilos compartilhados
+
+## Tecnologias
+- **Frontend**: HTML5, CSS3, JavaScript Vanilla
+- **Autenticação**: Google One Tap API
+- **Backend Simulado**: Mock.js para desenvolvimento
+- **Ambiente**: Windows PowerShell
+
+## Padrões de Código
+
+### JavaScript
+- Use JavaScript vanilla (ES6+)
+- Prefira async/await ao invés de promises
+- Funções devem ser declarativas e bem nomeadas
+- Comentários em português quando necessário
+
+### HTML
+- HTML5 semântico
+- Meta tags para SEO e responsividade
+- Estrutura clara e acessível
+
+### CSS
+- Mobile-first approach
+- CSS Grid/Flexbox para layouts
+- Variáveis CSS para cores e espaçamentos
+- Classes BEM para nomenclatura
+
+### Segurança
+- Nunca expor chaves de API no frontend
+- Validar dados no backend (mesmo que simulado)
+- HTTPS obrigatório em produção
+
+## Fluxo de Desenvolvimento
+1. Teste local primeiro
+2. Validar responsividade
+3. Testar integração com Google
+4. Simular cenários de erro
+5. Commit com mensagens descritivas
+
+## Comandos Úteis (PowerShell)
+```powershell
+# Servidor local
+python -m http.server 8000
+
+# Abrir no navegador
+Start-Process "http://localhost:8000"
+
+# Git workflow
+git add .; if ($?) { git commit -m "feat: descrição da feature" }
+```
+
+## Preferências do Usuário
+- Conteúdo em português
+- Explicações conceituais ao invés de muito código
+- Interface limpa e simples
+- Evitar animações desnecessárias
+- Formato narrativo ao invés de bullet points
