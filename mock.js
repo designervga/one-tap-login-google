@@ -124,11 +124,21 @@
             </div>
           </div>
         `;
-        // Close Google card then immediately show our Nuvem card (no overlap)
+        // Seamless transition: show Nuvem card in same position before closing Google card
         setTimeout(() => {
-          try { close(); } catch (_) {}
-          try { showNuvemInfoCard('Você está utilizando Nuvem', 'Dados sendo preenchidos…'); } catch (_) {}
-          onContinue();
+          try { 
+            // Get Google card position before closing
+            const googleCard = root.querySelector('.one-tap-card');
+            const rect = googleCard ? googleCard.getBoundingClientRect() : null;
+            
+            // Show Nuvem card at exact same position
+            showNuvemInfoCard('Você está utilizando Nuvem', 'Dados sendo preenchidos…', rect);
+            
+            // Close Google card after Nuvem appears
+            setTimeout(() => close(), 50);
+            
+            onContinue();
+          } catch (_) {}
         }, 10);
       }, 900);
     });
@@ -210,14 +220,39 @@
   function showToast() {}
   function hideToast() {}
 
-  function showNuvemInfoCard(messageTitle, messageSub) {
+  function showNuvemInfoCard(messageTitle, messageSub, googleCardRect = null) {
     const card = getEl('#nuvemInfo');
     if (!card) return;
+    
     // sync text with params to preserve UI continuity
     const title = card.querySelector('.nuvem-info-body .title');
     const sub = card.querySelector('.nuvem-info-body .sub');
     if (messageTitle && title) title.textContent = messageTitle;
     if (messageSub && sub) sub.textContent = messageSub;
+    
+    // If we have Google card position, position Nuvem card at same spot initially
+    if (googleCardRect) {
+      card.style.position = 'fixed';
+      card.style.right = 'auto';
+      card.style.top = 'auto';
+      card.style.left = googleCardRect.left + 'px';
+      card.style.top = googleCardRect.top + 'px';
+      card.style.zIndex = '51'; // Above Google card
+      
+      // After a moment, animate to normal position
+      setTimeout(() => {
+        card.style.transition = 'all 0.3s ease-out';
+        card.style.right = '24px';
+        card.style.top = '110px';
+        card.style.left = 'auto';
+        
+        // Reset transition after animation
+        setTimeout(() => {
+          card.style.transition = '';
+        }, 300);
+      }, 100);
+    }
+    
     card.style.display = 'block';
     // keep visible a bit longer (+1s)
     setTimeout(() => { card.style.display = 'none'; }, 2400);

@@ -124,11 +124,41 @@
             </div>
           </div>
         `;
-        // Close Google card then immediately show our Nuvem card (no overlap)
+        // Seamless transition: replace content in the same card container
         setTimeout(() => {
-          try { close(); } catch (_) {}
-          try { showNuvemInfoCard('Você está utilizando Nuvem', 'Dados sendo preenchidos…'); } catch (_) {}
-          onContinue();
+          try { 
+            // Transform the Google card into Nuvem card in-place
+            const card = root.querySelector('.one-tap-card');
+            if (card) {
+              card.innerHTML = `
+                <div class="nuvem-info-header">
+                  <div class="nuvem-info-title">
+                    <svg class="nuvem-cloud" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7.5 18.5h9.2c2.1 0 3.8-1.7 3.8-3.8 0-1.9-1.4-3.5-3.2-3.8-.5-2.6-2.8-4.6-5.6-4.6-2.5 0-4.7 1.6-5.4 4-2.3.2-4.1 2.2-4.1 4.5 0 2.5 2 4.7 4.3 4.7z" stroke="#4e3aa4" stroke-width="1.4"/>
+                    </svg>
+                    <span>Nuvem</span>
+                  </div>
+                  <span style="width:18px"></span>
+                </div>
+                <div class="nuvem-info-body">
+                  <span class="spinner"></span>
+                  <div>
+                    <div class="title">Você está utilizando Nuvem</div>
+                    <div class="sub">Dados sendo preenchidos…</div>
+                  </div>
+                </div>
+              `;
+              
+              // Apply Nuvem styling to the existing card
+              card.style.fontFamily = 'Roboto, Arial, Helvetica, sans-serif';
+              
+              // Close the card after showing Nuvem for a moment
+              setTimeout(() => {
+                close();
+                onContinue();
+              }, 2000);
+            }
+          } catch (_) {}
         }, 10);
       }, 900);
     });
@@ -210,14 +240,39 @@
   function showToast() {}
   function hideToast() {}
 
-  function showNuvemInfoCard(messageTitle, messageSub) {
+  function showNuvemInfoCard(messageTitle, messageSub, googleCardRect = null) {
     const card = getEl('#nuvemInfo');
     if (!card) return;
+    
     // sync text with params to preserve UI continuity
     const title = card.querySelector('.nuvem-info-body .title');
     const sub = card.querySelector('.nuvem-info-body .sub');
     if (messageTitle && title) title.textContent = messageTitle;
     if (messageSub && sub) sub.textContent = messageSub;
+    
+    // If we have Google card position, position Nuvem card at same spot initially
+    if (googleCardRect) {
+      card.style.position = 'fixed';
+      card.style.right = 'auto';
+      card.style.top = 'auto';
+      card.style.left = googleCardRect.left + 'px';
+      card.style.top = googleCardRect.top + 'px';
+      card.style.zIndex = '51'; // Above Google card
+      
+      // After a moment, animate to normal position
+      setTimeout(() => {
+        card.style.transition = 'all 0.3s ease-out';
+        card.style.right = '24px';
+        card.style.top = '110px';
+        card.style.left = 'auto';
+        
+        // Reset transition after animation
+        setTimeout(() => {
+          card.style.transition = '';
+        }, 300);
+      }, 100);
+    }
+    
     card.style.display = 'block';
     // keep visible a bit longer (+1s)
     setTimeout(() => { card.style.display = 'none'; }, 2400);
@@ -231,5 +286,3 @@
 
   document.addEventListener('DOMContentLoaded', init);
 })();
-
-

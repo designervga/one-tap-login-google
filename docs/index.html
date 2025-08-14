@@ -12,18 +12,22 @@
     <link rel="prefetch" href="payment.html" as="document" />
   </head>
   <body>
+    <div class="top-bar">
+      <div class="container top-bar-inner">
+        <span>COMPRA SEGURA</span>
+        <span class="separator">|</span>
+        <span>
+          <svg class="shield-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 0L1.5 2.5V6.5C1.5 10.5 4.5 14.5 8 16C11.5 14.5 14.5 10.5 14.5 6.5V2.5L8 0Z" fill="currentColor"/>
+            <path d="M6.5 10.5L4 8L5 7L6.5 8.5L11 4L12 5L6.5 10.5Z" fill="white"/>
+          </svg>
+          100% PROTEGIDO
+        </span>
+      </div>
+    </div>
     <header class="site-header">
       <div class="container header-inner">
         <div class="brand">MyStore</div>
-        <div class="secure">
-          <span class="secure-icon" aria-hidden="true">
-            <!-- lock icon -->
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="10" width="18" height="11" rx="2.5" fill="white"/>
-              <path d="M7.5 10V7.75C7.5 5.13 9.63 3 12.25 3C14.87 3 17 5.13 17 7.75V10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </span>
-        </div>
       </div>
     </header>
 
@@ -35,6 +39,49 @@
       </nav>
 
       <section class="content-grid">
+        <!-- Mobile: resumo do pedido recolhido no topo -->
+        <details class="mobile-order-summary" id="mobileOrderSummary">
+          <summary>
+            <span class="summary-toggle">
+              <span class="summary-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8 10l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span id="summaryToggleText">Ver detalhes do pedido</span>
+            </span>
+            <span class="summary-price">R$2,50</span>
+          </summary>
+          <div class="summary-content">
+            <div class="summary-item">
+              <div class="item-image" aria-hidden="true">
+                <svg viewBox="0 0 64 64" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="64" height="64" rx="8" fill="#0F0F0F"/>
+                  <path d="M16 20l8-6h16l8 6-6 6v22H22V26l-6-6z" fill="#2A2A2A"/>
+                  <circle cx="32" cy="36" r="10" fill="#1B1B1B"/>
+                  <text x="32" y="40" text-anchor="middle" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="8" fill="#8A8A8A">WOLF</text>
+                </svg>
+              </div>
+              <div class="item-details">
+                <div class="item-name">Camisa Manga Curta - Wolf</div>
+                <div class="item-variant">(Preto) × 1</div>
+              </div>
+              <div class="item-price">R$2,50</div>
+            </div>
+            
+            <div class="summary-totals">
+              <div class="total-line">
+                <span class="total-label">Subtotal</span>
+                <span class="total-value">R$2,50</span>
+              </div>
+              <div class="total-line total-final">
+                <span class="total-label">Total</span>
+                <span class="total-value">R$2,50</span>
+              </div>
+            </div>
+          </div>
+        </details>
         <!-- Left column: form -->
         <div class="form-column">
           <h1 class="section-title">Dados de contato</h1>
@@ -116,6 +163,17 @@
       </section>
     </main>
     <script src="mock.js"></script>
+    <script>
+      // Toggle texto do resumo mobile
+      (function() {
+        const details = document.getElementById('mobileOrderSummary');
+        const label = document.getElementById('summaryToggleText');
+        if (!details || !label) return;
+        const update = () => { label.textContent = details.open ? 'Ocultar detalhes do pedido' : 'Ver detalhes do pedido'; };
+        details.addEventListener('toggle', update);
+        update();
+      })();
+    </script>
     <!-- Global overlay for SPA transition on guest too -->
     <div id="pageOverlay" class="page-overlay">
       <div class="overlay-inner">
@@ -148,5 +206,3 @@
     </div>
   </body>
   </html>
-
-
